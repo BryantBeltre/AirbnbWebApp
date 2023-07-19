@@ -1,0 +1,82 @@
+﻿@using Airbnb.Core.Application.ViewModel.Airbnb;
+@using Airbnb.Core.Application.ViewModel.Tipos;
+@model List<airbnbViewModel>
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="container-fluid">
+
+    <div class="row homebodycontainer">
+        <div class="col">
+            <div class="col-md-12">
+                <form method="post" asp-controller="Home" asp-action="Index">
+                    <div class="card">
+                        <div class="card-header bg-dark text-light d-flex justify-content-between align-items-center">
+                            <h4>Filtrar Búsqueda</h4>
+                            <button type="submit" class="btn btn-info">Filtrar</button>
+                        </div>
+                        <div class="card-body">
+                            <h4 class="card-title">Tipos</h4>
+
+                            <div class="mb-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" value="null" type="radio" name="TiposNameId" id="tipo-all" />
+                                    <label class="form-check-label" for="tipo-all"> Todos</label>
+
+                                </div>
+                            </div>
+                            @foreach (TipoViewModel tipo in ViewBag.Tipos)
+                            {
+
+                                <div class="mb-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" value="@tipo.Id" type="radio" name="TiposNameId" id="tipo-@tipo.Id" />
+                                        <label class="form-check-label" for="tipo-@tipo.Id"> @tipo.Name </label>
+
+                                    </div>
+                                </div>
+                            }
+
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+    <br />
+
+
+    <div class="row">
+
+        @if (Model == null || Model.Count == 0)
+        {
+            <h2>No hay Airbnbs Disponibles en este momento</h2>
+        }
+        else
+        {
+            @foreach (airbnbViewModel item in Model)
+            {
+                <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-5">
+                    <div class="card shadow-sm bodycarstyle mb-3">
+                        <img class="card-img-top bd-placeholder-img img-airbnb-size" src="@item.UrlImg" />
+                        <div class="card-body bodycarstyle text-white">
+                            <h5 class="text-black"><b>@item.Name</b></h5>
+                            <h6 class="fw-bold">@item.Ubication</h6>
+                            <h6 class="fw-bold">Hola soy @item.Owner , quédate conmigo!</h6>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="fw-bold text-black">@item.TipoName</span>
+                                <small class="fw-bold fs-6 text-black">$@item.Priece USD</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+
+        }
+
+    </div>
+
+</div>

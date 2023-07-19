@@ -1,0 +1,75 @@
+﻿@using Airbnb.Core.Application.ViewModel.Airbnb;
+@model airbnbSaveViewModel
+
+@{
+    bool EditMode = Model.Id == 0 ? false : true;
+    ViewData["Title"] = "SaveAirbnb";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-6 offset-3 mb-5">
+
+            <div class="card">
+                <div class="card-header bg-dark text-light">
+                    <h4>@(EditMode ? $"Editando Airbnb: {Model.Name}" : "Creando Airbnb")</h4>
+                </div>
+                <div class="card-body">
+                    @if (Model.Tipos == null || Model.Tipos.Count == 0)
+                    {
+                        <h4>No hay tipos de AIRBNBS disponibles</h4>
+                        <a asp-controller="Airbnb" asp-action="Index" class="btn btn-outline-warning">Regresar</a>
+                    }
+                    else
+                    {
+                        <form method="post" asp-controller="Airbnb" asp-action="@(EditMode ? "Edit" : "Create")">
+                            <div class="mb-3">
+                                <label asp-for="Name" class="form-label">Nombre Airbnb: </label>
+                                <input asp-for="Name" class="form-control" placeholder="Eje: El paraiso" />
+                                <span asp-validation-for="Name" class="text-danger"></span>
+                            </div>
+                            <div class="mb-3">
+                                <label asp-for="Description" class="form-label">Description Airbnb: </label>
+                                <textarea asp-for="Description" class="form-control" placeholder="Eje: 2 niveles, vista a la playa..."> </textarea>
+                                <span asp-validation-for="Description" class="text-danger"></span>
+                            </div>
+                            <div class="mb-3">
+                                <label asp-for="Ubication" class="form-label">Ubicacion Airbnb: </label>
+                                <input asp-for="Ubication" class="form-control" placeholder="Eje: Barahona - Republica Dominicana" />
+                                <span asp-validation-for="Ubication" class="text-danger"></span>
+                            </div>
+                            <div class="mb-3">
+                                <label asp-for="Owner" class="form-label">Propietario Airbnb: </label>
+                                <input asp-for="Owner" class="form-control" placeholder="Eje: Jose Perez" />
+                                <span asp-validation-for="Owner" class="text-danger"></span>
+                            </div>
+                            <div class="mb-3">
+                                <label asp-for="UrlImg" class="form-label">Link Imagen Airbnb: </label>
+                                <input asp-for="UrlImg" class="form-control" placeholder="Eje: URL" />
+                                <span asp-validation-for="UrlImg" class="text-danger"></span>
+                            </div>
+                            <div class="mb-3">
+                                <label asp-for="Priece" class="form-label">Precio por noche Airbnb:$ </label>
+                                <input asp-for="Priece" type="number" class="form-control" placeholder="Eje: 100.25" />
+                                <span asp-validation-for="Priece" class="text-danger"></span>
+                            </div>
+                            <div class="mb-3">
+                                <label asp-for="TipoId" class="form-label">Tipo: </label>
+                                <select asp-for="TipoId" asp-items="@(new SelectList(Model.Tipos, "Id", "Name" ))" class="form-control">
+                                    <option value="0">Seleccione el tipo Airnb </option>
+                                </select>
+                            </div>
+                            <input type="hidden" asp-for="Id" />
+
+                            <button type="submit" class="btn btn-primary">Guardar</button>
+                            <a asp-controller="Airbnb" asp-action="Index" class="btn btn-warning">Volver</a>
+                        </form>
+                        
+                    }                   
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>

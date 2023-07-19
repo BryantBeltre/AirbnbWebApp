@@ -1,0 +1,41 @@
+﻿@using Airbnb.Core.Application.ViewModel.Tipos;
+@model TipoSaveViewModel
+
+@{
+    bool EditMode = Model.Id == 0 ? false : true;
+    ViewData["Title"] = "SaveAirbnb";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-6 offset-3">
+
+            <div class="card">
+                <div class="card-header bg-dark text-light">
+                    <h4>@(EditMode ? $"Editando Tipo: {Model.Name}" : "Creando Tipo")</h4>
+                </div>
+                <div class="card-body">
+                    <form method="post" asp-controller="Tipo" asp-action="@(EditMode ? "Edit" : "Create")">
+                        <div class="mb-3">
+                            <label asp-for="Name" class="form-label">Nombre Tipo: </label>
+                            <input asp-for="Name" class="form-control" placeholder="Eje: Villa" />
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Description" class="form-label">Description Tipo: </label>
+                            <textarea asp-for="Description" class="form-control" placeholder="Puede ser una casa o finca de 1 o mas boletos"> </textarea>
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+
+                        <input type="hidden" asp-for="Id"/>
+
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                        <a asp-controller="Tipo" asp-action="Index" class="btn btn-warning">Volver</a>
+                    </form>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,51 @@
+﻿@using Airbnb.Core.Application.ViewModel.Airbnb;
+@model List<airbnbViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="container-fluid">
+
+    <div class="row mb-3">
+        <div class="col-12 col-md-3 offset-md-9 text-md-end mb-md-3">
+            <a asp-controller="Airbnb" asp-action="Create" class="btn btn-sm btn-success">Crear nuevo</a>
+        </div>
+    </div>
+
+    <div class="row">
+
+        @if (Model == null || Model.Count == 0)
+        {
+            <h2 class="col-12">No hay Airbnbs Disponibles en este momento</h2>
+        }
+        else
+        {
+            @foreach (airbnbViewModel item in Model)
+            {
+                <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-5">
+                    <div class="card shadow-sm bodycarstyle mb-3">
+                        <img class="card-img-top bd-placeholder-img img-airbnb-size" src="@item.UrlImg" />
+                        <div class="card-body text-white" style="font-size:small;">
+                            <h5 class="text-black" style="font-size:small;"><b>@item.Name</b></h5>
+                            <h6 class="fw-bold" style="font-size:small;">@item.Ubication</h6>
+                            <h6 class="fw-bold" style="font-size:small;">Hola soy @item.Owner, quédate conmigo!</h6>
+                            <p class="fw-bold fs-6 text-black" style="font-size:small;"> @item.TipoName - $@item.Priece USD</p>
+
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="btn-group">
+                                    <a asp-controller="Airbnb" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger">Delete</a>
+                                    <a asp-controller="Airbnb" asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-info">Edit</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+
+    </div>
+
+</div>
+
+
