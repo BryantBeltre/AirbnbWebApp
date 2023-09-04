@@ -63,9 +63,14 @@ namespace Airbnb.Infrastructure.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("TipoId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Airbnbs");
                 });
@@ -102,6 +107,51 @@ namespace Airbnb.Infrastructure.Persistence.Migrations
                     b.ToTable("Tipos");
                 });
 
+            modelBuilder.Entity("Airbnb.Core.Domain.Entities.User", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("CreateBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users");
+                });
+
             modelBuilder.Entity("Airbnb.Core.Domain.Entities.Airbnbs", b =>
                 {
                     b.HasOne("Airbnb.Core.Domain.Entities.Tipo", "Tipo")
@@ -110,12 +160,25 @@ namespace Airbnb.Infrastructure.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Airbnb.Core.Domain.Entities.User", "User")
+                        .WithMany("Airbnbs")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Tipo");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Airbnb.Core.Domain.Entities.Tipo", b =>
                 {
                     b.Navigation("Airbnb");
+                });
+
+            modelBuilder.Entity("Airbnb.Core.Domain.Entities.User", b =>
+                {
+                    b.Navigation("Airbnbs");
                 });
 #pragma warning restore 612, 618
         }

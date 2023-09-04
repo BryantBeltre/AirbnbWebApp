@@ -1,11 +1,12 @@
-﻿using Airbnb.Core.Application.Interface.Repositories;
+﻿using Airbnb.Core.Application.Helpers;
+using Airbnb.Core.Application.Interface.Repositories;
 using Airbnb.Core.Application.Interface.Services;
 using Airbnb.Core.Application.ViewModel.Airbnb;
+using Airbnb.Core.Application.ViewModel.User;
 using Airbnb.Core.Domain.Entities;
-using System;
+using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Airbnb.Core.Application.Services.Airbnb
@@ -13,10 +14,14 @@ namespace Airbnb.Core.Application.Services.Airbnb
     public class AirbnbServices : IAirbnbServices
     {
         private readonly IAirbnbRepository _airbnbRepository;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly UserViewModel userViewModel;
 
-        public AirbnbServices(IAirbnbRepository airbnbRepository)
+        public AirbnbServices(IAirbnbRepository airbnbRepository, IHttpContextAccessor httpContextAccessor)
         {
+            _httpContextAccessor = httpContextAccessor;
             _airbnbRepository = airbnbRepository;
+            userViewModel = _httpContextAccessor.HttpContext.Session.Get<UserViewModel>("user");
         }
 
         public async Task Update(airbnbSaveViewModel asvm)
@@ -30,6 +35,7 @@ namespace Airbnb.Core.Application.Services.Airbnb
             airbnb.Owner = asvm.Owner;
             airbnb.Priece = asvm.Priece;
             airbnb.TipoId = asvm.TipoId;
+            airbnb.UserId = userViewModel.Id;
 
             await _airbnbRepository.UpdateAsync(airbnb);
         }
@@ -45,6 +51,7 @@ namespace Airbnb.Core.Application.Services.Airbnb
             airbnb.Owner = asvm.Owner;
             airbnb.Priece = asvm.Priece;
             airbnb.TipoId = asvm.TipoId;
+            airbnb.UserId = userViewModel.Id;
 
             await _airbnbRepository.addAsync(airbnb);
         }
@@ -71,7 +78,7 @@ namespace Airbnb.Core.Application.Services.Airbnb
         {
             var airbnbList = await _airbnbRepository.GetAllWithIncludeAsync(new List<string> { "Tipo" });
 
-            return airbnbList.Select(airbnb => new airbnbViewModel
+            return airbnbList.Where(airbnb => airbnb.UserId == userViewModel.Id).Select(airbnb => new airbnbViewModel
             {
                 Id = airbnb.Id,
                 Name = airbnb.Name,

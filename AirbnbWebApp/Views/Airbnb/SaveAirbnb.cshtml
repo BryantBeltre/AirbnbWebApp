@@ -22,7 +22,7 @@
                     }
                     else
                     {
-                        <form method="post" asp-controller="Airbnb" asp-action="@(EditMode ? "Edit" : "Create")">
+                        <form method="post" asp-controller="Airbnb" enctype="multipart/form-data" asp-action="@(EditMode ? "Edit" : "Create")">
                             <div class="mb-3">
                                 <label asp-for="Name" class="form-label">Nombre Airbnb: </label>
                                 <input asp-for="Name" class="form-control" placeholder="Eje: El paraiso" />
@@ -44,9 +44,8 @@
                                 <span asp-validation-for="Owner" class="text-danger"></span>
                             </div>
                             <div class="mb-3">
-                                <label asp-for="UrlImg" class="form-label">Link Imagen Airbnb: </label>
-                                <input asp-for="UrlImg" class="form-control" placeholder="Eje: URL" />
-                                <span asp-validation-for="UrlImg" class="text-danger"></span>
+                                <label asp-for="File" class="form-label">Seleccione una imagen: </label>
+                                <input asp-for="File" class="form-control" />
                             </div>
                             <div class="mb-3">
                                 <label asp-for="Priece" class="form-label">Precio por noche Airbnb:$ </label>

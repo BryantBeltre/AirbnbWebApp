@@ -12,7 +12,7 @@ namespace Airbnb.Infrastructure.Persistence
     //Extension Method - Decorator
     public static class ServiceRegistration
     {
-        public static void AddApplicationLayer(this IServiceCollection services, IConfiguration configuration)
+        public static void AddpersistenceInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
             #region Context
             if (configuration.GetValue<bool>("UseInMemoryDatabase"))
@@ -31,6 +31,7 @@ namespace Airbnb.Infrastructure.Persistence
             services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddTransient<IAirbnbRepository, AirbnbRepository>();
             services.AddTransient<ITipoRepository, TipoRepository>();
+            services.AddTransient<IUserRepository, UserRepository>();
             #endregion
 
         }

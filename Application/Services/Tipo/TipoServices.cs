@@ -1,8 +1,11 @@
-﻿using Airbnb.Core.Application.Interface.Repositories;
+﻿using Airbnb.Core.Application.Helpers;
+using Airbnb.Core.Application.Interface.Repositories;
 using Airbnb.Core.Application.Interface.Services;
 using Airbnb.Core.Application.ViewModel.Airbnb;
 using Airbnb.Core.Application.ViewModel.Tipos;
+using Airbnb.Core.Application.ViewModel.User;
 using Airbnb.Core.Domain.Entities;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,10 +17,14 @@ namespace Airbnb.Core.Application.Services.Airbnb
     public class TipoServices : ITipoServices
     {
         private readonly ITipoRepository _tipoRepository;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly UserViewModel userViewModel;
 
-        public TipoServices(ITipoRepository tipoRepository)
+        public TipoServices(ITipoRepository tipoRepository, IHttpContextAccessor httpContextAccessor)
         {
             _tipoRepository = tipoRepository;
+            _httpContextAccessor = httpContextAccessor;
+            userViewModel = _httpContextAccessor.HttpContext.Session.Get<UserViewModel>("user");
         }
 
         public async Task Update(TipoSaveViewModel tsvm)
@@ -60,7 +67,7 @@ namespace Airbnb.Core.Application.Services.Airbnb
                 Id = tipo.Id,
                 Name = tipo.Name,
                 Description = tipo.Description,
-                HowManyAirbnb = tipo.Airbnb.Count()
+                HowManyAirbnb = tipo.Airbnb.Where(tipo => tipo.UserId == userViewModel.Id).Count()
 
             }).ToList();
         }

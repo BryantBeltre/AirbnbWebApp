@@ -21,5 +21,7 @@ namespace Airbnb.Core.Application.Interface.Repositories
 
         Task<List<Entity>> GetAllWithIncludeAsync(List<string> properties);
 
+
+
     }
 }

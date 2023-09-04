@@ -21,9 +21,17 @@ namespace Airbnb.Core.Domain.Entities
 
         public double Priece { get; set; }
 
+        //Navigation Property Tipo
         public int TipoId { get; set; }
-
+        
         public Tipo Tipo { get; set; }
+         
+        // Navigation Property User
+        public int UserId { get; set; }
+
+        public User User { get; set; }
+
+
 
 
     }

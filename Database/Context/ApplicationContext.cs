@@ -19,6 +19,11 @@ namespace Airbnb.Infrastructure.Persistence.Context
 
         public DbSet<Tipo> Tipos { get; set; }
 
+        public DbSet<User> Users { get; set; }
+
+
+
+
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {
             foreach (var entry in ChangeTracker.Entries<AuditableBaseEntity>())
@@ -48,6 +53,9 @@ namespace Airbnb.Infrastructure.Persistence.Context
             modelBuilder.Entity<Tipo>()
                 .ToTable("Tipos");
 
+            modelBuilder.Entity<User>()
+                .ToTable("Users");
+
             #endregion
 
 
@@ -58,6 +66,11 @@ namespace Airbnb.Infrastructure.Persistence.Context
             modelBuilder.Entity<Tipo>()
                 .HasKey(tipo => tipo.Id);
 
+            modelBuilder.Entity<User>()
+                .HasKey(user => user.Id);
+
+
+
             #endregion
 
 
@@ -67,6 +80,12 @@ namespace Airbnb.Infrastructure.Persistence.Context
                 .HasMany<Airbnbs>(tipo => tipo.Airbnb)
                 .WithOne(airbnb => airbnb.Tipo)
                 .HasForeignKey(airbnb => airbnb.TipoId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<User>()
+                .HasMany<Airbnbs>(user => user.Airbnbs)
+                .WithOne(airbnb => airbnb.User)
+                .HasForeignKey(airbnb => airbnb.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             #endregion
@@ -91,7 +110,7 @@ namespace Airbnb.Infrastructure.Persistence.Context
                 .IsRequired();
 
             modelBuilder.Entity<Airbnbs>()
-                .Property(airbnb => airbnb.UrlImg)
+                .Property(airbnb => airbnb.Priece)
                 .IsRequired();
 
             #endregion
@@ -105,6 +124,30 @@ namespace Airbnb.Infrastructure.Persistence.Context
                 .Property(tipo => tipo.Description)
                 .IsRequired();
 
+            #endregion
+
+            #region "Users"
+
+            modelBuilder.Entity<User>()
+                .Property(user => user.UserName)
+                .IsRequired()
+                .HasMaxLength(100);
+
+            modelBuilder.Entity<User>()
+                .Property(user => user.Password)
+                .IsRequired();
+
+            modelBuilder.Entity<User>()
+                .Property(user => user.Name)
+                .IsRequired();
+
+            modelBuilder.Entity<User>()
+                .Property(user => user.Email)
+                .IsRequired();
+
+            modelBuilder.Entity<User>()
+                .Property(user => user.Phone)
+                .IsRequired();
             #endregion
 
 

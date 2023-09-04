@@ -21,20 +21,20 @@ namespace Application.Repository
         }
 
 
-        public async Task addAsync(Entity entity)
+        public virtual async Task addAsync(Entity entity)
         {
             await _DbContext.Set<Entity>().AddAsync(entity);
             await _DbContext.SaveChangesAsync();
         }
 
-        public async Task UpdateAsync(Entity entity)
+        public virtual async Task UpdateAsync(Entity entity)
         {
             _DbContext.Entry(entity).State = EntityState.Modified;
             await _DbContext.SaveChangesAsync();
 
         }
 
-        public async Task DeleteAsync(Entity entity)
+        public virtual async Task DeleteAsync(Entity entity)
         {
             _DbContext.Set<Entity>().Remove(entity);
             await _DbContext.SaveChangesAsync();

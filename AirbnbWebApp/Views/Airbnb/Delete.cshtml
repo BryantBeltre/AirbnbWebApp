@@ -8,12 +8,12 @@
     <div class="col-6 offset-3">
         <div class="card">
             <div class="card-header bg-danger text-light">
-                <h4>Estas seguro de que quieres eliminar el propiedad @Model.Name
+                <h4>Estas seguro de que quieres eliminar la propiedad @Model.Name
                 </h4>
             </div>
 
             <div class=" card-body">
-                <form method="post" asp-controller="Tipo" asp-action="DeletePost">
+                <form method="post" asp-controller="Airbnb" asp-action="DeletePost">
                     <input type="hidden" asp-for="Id"/>
 
                     <button type="submit" class="btn btn-danger">Eliminar</button>

@@ -1,4 +1,12 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Http;
+@using Airbnb.Core.Application.Helpers;
+@using Airbnb.Core.Application.ViewModel.User;
+@inject IHttpContextAccessor httpContext;
+@{
+    UserViewModel User = httpContext.HttpContext.Session.Get<UserViewModel>("user");
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -13,22 +21,34 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light footerstyle border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand text-white" asp-area="" asp-controller="Home" asp-action="Index">AirbnbWebApp</a>
+                <a class="navbar-brand text-white" asp-controller="@(User != null ? "Home" : "User")" asp-action="Index">AirbnbWebApp</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-white" asp-area="" asp-controller="Airbnb" asp-action="Index">Mant. Airbnb</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-white" asp-area="" asp-controller="Tipo" asp-action="Index">Mant. Tipo</a>
-                        </li>
+
+                        @if (User != null)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-white" asp-controller="Airbnb" asp-action="Index">Mant. Airbnb</a>
+                            </li>
+                            
+                            <li class="nav-item">
+                                <a class="nav-link text-white" asp-controller="Tipo" asp-action="Index">Mant. Tipo</a>
+                            </li>
+                            
+                            <li class="nav-item">
+                                <a class="nav-link text-white" asp-controller="User" asp-action="LogOut">Cerrar session</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-white" asp-controller="User" asp-action="Register">Registrate</a>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>
